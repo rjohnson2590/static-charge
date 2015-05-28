@@ -2,4 +2,9 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  each post in posts
+    p
+     a(href=post.postName)
+      != post.contents
+
+    
