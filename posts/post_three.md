@@ -1,5 +1,5 @@
 ---
-title: Third
+title: Third.
 author: johndoe
 date: 2015-05-22
 ---

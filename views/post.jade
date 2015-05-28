@@ -2,8 +2,8 @@ extends layout
 
 block content  
   != postContents
-  //- ul 
-  //-   each val in postChildren
-  //-     li 
-  //-       a(href=val)
-  //-         = val
+   a(href=postPrev) Previous
+      != postsContents 
+     &nbsp; &nbsp; &nbsp; &nbsp;
+   a(href=postNex) Next
+      != postsContents  

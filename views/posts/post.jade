@@ -1,4 +1,7 @@
 extends layout
 
-block content
-	!= postContents
+block content  
+  != postContents
+ a(href=posts.previous)
+        = Previous
+      != posts.contents

@@ -21,7 +21,7 @@ function comparePostsByDate(post1,post2){
 
   var posts = directoryContents.map(function(filename) {
       var postName = filename.replace('.md', '');
-      var contents = fs.readFileSync(postsDir + filename, {encoding: 'utf-8'});
+      var contents = fs.readFileSync(postsDir + filename, {encoding: 'utf-8'})
       var firstSplit= contents.split("---")[1]
       var secondSplit= firstSplit.split('\n')[3]
       var thirdSplit= secondSplit.split(":")[1]
@@ -35,21 +35,30 @@ function comparePostsByDate(post1,post2){
       var titleSplit= firstSplit.split("title")[1]
       var actualTitle= titleSplit.split(":")[1]
       var seriousTitle= actualTitle.split(" ")[1]
-      var thisTitle= seriousTitle.split('<br />')[1]
-      console.log(seriousTitle)
-      return {postName: postName, contents: marked(contents), children : hierarchy["postz"] || [], date: fourthSplit, realNum:dateNum};
+      var thisTitle= seriousTitle.split('.')[0]
+      console.log(thisTitle)
+      return {postName: postName, contents: marked(contents), children : hierarchy["postz"] || [], date: fourthSplit, realNum:dateNum, realTitle:thisTitle};
   });
 posts.sort(comparePostsByDate)
-    
+    for(var i=1; i<posts.length;i++){
+      if(posts[i-1]){
+      posts[i].prev= posts[i-1].postName
+    }
+  }
+    for(var i=0; i<posts.length;i++){
+     if(posts[i+1]){
+      posts[i].nex=posts[i+1].postName
+      } 
+    }
 
  // GET home page
-  router.get('/', function(request, response) {
-    response.render('index', {posts: posts, title: 'all posts'} )
+  router.get('/', function(request, response) {// produce a beahvior when the server recieves a get request
+    response.render('index', {posts: posts, title: 'Blog'} )// renders the index.jade tempplate (passes information into it), the beahvior that is produced is pasing information to index.jade.
   });
-
-  posts.forEach(function(post) {
+  console.log(posts[1].prev)
+  posts.forEach(function(post) {// creates a specific route for each post
     router.get('/' + post.postName, function(request, response) {
-  response.render('post', {postContents: post.contents, postChildren: post.children});
+  response.render('post', {postContents: post.contents, postChildren: post.children, postPrev: post.prev, postNex:post.nex});
 
     });
   });
